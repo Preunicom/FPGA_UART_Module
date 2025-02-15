@@ -3,20 +3,23 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Buffer_Register_Serializer is
+  Generic(
+    DATA_BITS : integer := 8
+  );
   Port ( 
     clk, rst, write_enable : in std_logic;
-    data_in : in std_logic_vector(7 downto 0);
-    shift_reg_read_successfully : in std_logic;
-    data_out : out std_logic_vector(7 downto 0);
+    data_in : in std_logic_vector(DATA_BITS-1 downto 0);
+    data_not_needed_anymore : in std_logic;
+    data_out : out std_logic_vector(DATA_BITS-1 downto 0);
     full : out std_logic
     );
 end Buffer_Register_Serializer;
 
 architecture Behavioral of Buffer_Register_Serializer is
-  signal data : std_logic_vector(7 downto 0) := (others => '1');
+  signal data : std_logic_vector(DATA_BITS-1 downto 0) := (others => '1');
   signal full_int : std_logic := '0';
-  signal last_shift_reg_data_ready : std_logic := '1';
-  signal shift_reg_data_ready_change_detected : std_logic := '1';
+  signal last_serializer_ready_status : std_logic := '1';
+  signal serializer_ready_status_change_detected : std_logic := '1';
 begin
   
   BUFS: process(clk, rst)
@@ -26,11 +29,11 @@ begin
       data_out <= (others => '1');
       full <= '0';
       full_int <= '0';
-      last_shift_reg_data_ready <= '1';
-      shift_reg_data_ready_change_detected <= '1';
+      last_serializer_ready_status <= '1';
+      serializer_ready_status_change_detected <= '1';
     elsif rising_edge(clk) then
-      shift_reg_data_ready_change_detected <= shift_reg_data_ready_change_detected;
-      last_shift_reg_data_ready <= shift_reg_read_successfully;
+      serializer_ready_status_change_detected <= serializer_ready_status_change_detected;
+      last_serializer_ready_status <= data_not_needed_anymore;
       data_out <= data;
       data <= data;
       -- Default case:
@@ -39,8 +42,8 @@ begin
       full <= full_int;
       full_int <= full_int;
 
-      if (shift_reg_read_successfully = '1' and last_shift_reg_data_ready = '0') or shift_reg_data_ready_change_detected = '1' then
-        shift_reg_data_ready_change_detected <= '1';
+      if (data_not_needed_anymore = '1' and last_serializer_ready_status = '0') or serializer_ready_status_change_detected = '1' then
+        serializer_ready_status_change_detected <= '1';
         -- current data sent
         --> Get new data
         full <= '0'; --> automatically sets write enable to false at shift reg
@@ -52,7 +55,7 @@ begin
           data_out <= data_in;
           full_int <= '1';
           full <= '1';
-          shift_reg_data_ready_change_detected <= '0';
+          serializer_ready_status_change_detected <= '0';
         end if; 
       end if;
     end if;

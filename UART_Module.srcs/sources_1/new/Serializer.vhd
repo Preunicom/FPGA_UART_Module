@@ -3,17 +3,23 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Serializer is
-      Port ( 
-        clk, rst, write_enable : in std_logic;
-        parallel_in : in std_logic_vector(7 downto 0);
-        serial_out : out std_logic;
-        read_successfully : out std_logic
-      );
+  Generic(
+    -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
+    DATA_BITS : integer := 8;
+    STOP_BITS : integer := 1
+  );
+  Port ( 
+    clk, rst, write_enable : in std_logic;
+    parallel_in : in std_logic_vector(DATA_BITS-1 downto 0);
+    serial_out : out std_logic;
+    data_saved_to_send : out std_logic
+  );
 end Serializer;
 
 architecture Behavioral of Serializer is
-  signal reg : std_logic_vector(9 downto 0);
+  signal reg : std_logic_vector(DATA_BITS+STOP_BITS downto 0); -- data + stop + start bits
   signal counter : std_logic_vector(3 downto 0);
+  signal stop_bits_suffix : std_logic_vector(STOP_BITS-1 downto 0) := (others => '1');
 begin
 
   SER: process(clk, rst)
@@ -22,26 +28,17 @@ begin
       reg <= (others => '1');
       counter <= (others => '0');
       serial_out <= '1';
-      read_successfully <= '1';
+      data_saved_to_send <= '1';
     elsif rising_edge(clk) then
-      read_successfully <= '0';
+      data_saved_to_send <= '0';
       counter <= counter + 1;
       serial_out <= reg(0);
-      reg(0) <= reg(1);
-      reg(1) <= reg(2);
-      reg(2) <= reg(3);
-      reg(3) <= reg(4);
-      reg(4) <= reg(5);
-      reg(5) <= reg(6);
-      reg(6) <= reg(7);
-      reg(7) <= reg(8);
-      reg(8) <= reg(9);
-      reg(9) <= '1';
-      if counter = 9 then
+      reg <= '1' & reg(DATA_BITS+STOP_BITS downto 1);
+      if counter = DATA_BITS+STOP_BITS then
         if write_enable = '1' then
-          reg <= '1' & parallel_in & '0';
+          reg <= stop_bits_suffix & parallel_in & '0';
           counter <= (others => '0');
-          read_successfully <= '1';
+          data_saved_to_send <= '1';
         else
           counter <= "1001";
         end if;

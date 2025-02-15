@@ -3,17 +3,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.std_logic_unsigned.ALL;
 
 entity Buffer_Register_Deserializer is
+  Generic(
+    DATA_BITS : integer := 8
+  );
   Port ( 
     clk, rst : in STD_LOGIC;
-    parallel_in : in std_logic_vector(7 downto 0);
+    parallel_in : in std_logic_vector(DATA_BITS-1 downto 0);
     write_en : in std_logic;
-    parallel_out : out std_logic_vector(7 downto 0);
+    parallel_out : out std_logic_vector(DATA_BITS-1 downto 0);
     new_data : out std_logic
   );
 end Buffer_Register_Deserializer;
 
 architecture Behavioral of Buffer_Register_Deserializer is
-  signal data : std_logic_vector(7 downto 0);
+  signal data : std_logic_vector(DATA_BITS-1 downto 0);
 begin
 
   BUFDES: process(clk, rst)
