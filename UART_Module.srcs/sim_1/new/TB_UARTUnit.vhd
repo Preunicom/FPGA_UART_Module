@@ -10,7 +10,9 @@ architecture TESTBENCH of TB_UARTUnit is
         IN_FREQ_HZ : integer := 12000000;
         BAUD_FREQ_HZ : integer := 9600;
         DATA_BITS : integer := 8;
-        STOP_BITS : integer := 1
+        STOP_BITS : integer := 1;
+        PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+        PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
       );
       Port ( 
         clk, rst : in STD_LOGIC;
@@ -35,7 +37,7 @@ architecture TESTBENCH of TB_UARTUnit is
     signal tb_RX_pin : std_logic;
     constant tbase : time := 83 ns;
 begin
-    COMP: UART_Unit generic map(12000000, 9600, 5, 2) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_new_data_received, tb_RX_pin);
+    COMP: UART_Unit generic map(12000000, 9600, 5, 2, 1, 0) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_new_data_received, tb_RX_pin);
     
     process
     begin

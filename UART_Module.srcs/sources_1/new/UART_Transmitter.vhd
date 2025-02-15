@@ -7,7 +7,9 @@ entity UART_Transmitter is
     IN_FREQ_HZ : integer := 12000000;
     BAUD_FREQ_HZ : integer := 9600;
     DATA_BITS : integer := 8;
-    STOP_BITS : integer := 1
+    STOP_BITS : integer := 1;
+    PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+    PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
   );
   Port ( 
     clk, rst : in std_logic;
@@ -43,14 +45,17 @@ architecture Behavioral of UART_Transmitter is
   end component;
   component Serializer
     Generic(
+      -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
       DATA_BITS : integer := 8;
-      STOP_BITS : integer := 1
+      STOP_BITS : integer := 1;
+      PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+      PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
       clk, rst, write_enable : in std_logic;
       parallel_in : in std_logic_vector(DATA_BITS-1 downto 0);
       serial_out : out std_logic;
-      data_saved_to_send : out std_logic
+      buffer_data_saved : out std_logic
     );
     end component;
   signal prescaled_clk_intern : std_logic;
@@ -60,7 +65,7 @@ architecture Behavioral of UART_Transmitter is
 begin
   PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst, prescaled_clk_intern);
   BRSER: Buffer_Register_Serializer generic map(DATA_BITS) port map(clk, rst, write_en, data_in, data_saved_intern, data_intern, full_intern);
-  SER: Serializer generic map(DATA_BITS, STOP_BITS) port map(prescaled_clk_intern, rst, full_intern, data_intern, serial_out, data_saved_intern);
+  SER: Serializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, rst, full_intern, data_intern, serial_out, data_saved_intern);
 
   full <= full_intern;
   

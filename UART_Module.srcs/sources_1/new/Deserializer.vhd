@@ -6,7 +6,9 @@ entity Deserializer is
   Generic(
     -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
     DATA_BITS : integer := 8;
-    STOP_BITS : integer := 1
+    STOP_BITS : integer := 1;
+    PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+    PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
   );
   Port ( 
     clk, rst : in std_logic;
@@ -17,7 +19,7 @@ entity Deserializer is
 end Deserializer;
 
 architecture Behavioral of Deserializer is
-  signal reg : std_logic_vector(DATA_BITS+STOP_BITS downto 0);
+  signal reg : std_logic_vector(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto 0);
   signal counter : std_logic_vector(3 downto 0) := "0000";
 begin
 
@@ -32,13 +34,13 @@ begin
       parallel_out <= (others => '0');
       data_valid <= '0';
       counter <= counter + 1;
-      reg <= serial_in & reg(DATA_BITS+STOP_BITS downto 1);
+      reg <= serial_in & reg(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto 1);
       if counter = 0 then
         if serial_in = '1' then
             counter <= (others => '0');
         end if;
       end if;
-      if counter = DATA_BITS+STOP_BITS then
+      if counter = DATA_BITS+STOP_BITS+PARITY_ACTIVE then
         parallel_out <= reg(DATA_BITS+1 downto 2); -- Last Bit not shifted yet (this clock cyle shift) and start bit as offset 
         data_valid <= '1';
         counter <= (others => '0');

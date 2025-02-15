@@ -7,7 +7,9 @@ entity UART_Receiver is
     IN_FREQ_HZ : integer := 12000000;
     BAUD_FREQ_HZ : integer := 9600;
     DATA_BITS : integer := 8;
-    STOP_BITS : integer := 1
+    STOP_BITS : integer := 1;
+    PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+    PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
   );
   Port ( 
     clk, rst : in std_logic;
@@ -42,8 +44,11 @@ architecture Behavioral of UART_Receiver is
   end component;
   component Deserializer
     Generic(
+      -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
       DATA_BITS : integer := 8;
-      STOP_BITS : integer := 1
+      STOP_BITS : integer := 1;
+      PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+      PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
       clk, rst : in std_logic;
@@ -58,6 +63,6 @@ architecture Behavioral of UART_Receiver is
 begin
   PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst, prescaled_clk_intern);
   BRDESER: Buffer_Register_Deserializer generic map(DATA_BITS) port map(clk, rst, data_intern, data_ready_intern, parallel_out, new_data);
-  DESER: Deserializer generic map(DATA_BITS, STOP_BITS) port map(prescaled_clk_intern, rst, serial_in, data_intern, data_ready_intern);
+  DESER: Deserializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, rst, serial_in, data_intern, data_ready_intern);
   
 end Behavioral;

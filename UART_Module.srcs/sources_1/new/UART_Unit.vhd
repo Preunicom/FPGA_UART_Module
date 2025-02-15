@@ -6,8 +6,11 @@ entity UART_Unit is
   Generic (
     IN_FREQ_HZ : integer := 12000000;
     BAUD_FREQ_HZ : integer := 9600;
+    -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
     DATA_BITS : integer := 8;
-    STOP_BITS : integer := 1
+    STOP_BITS : integer := 1;
+    PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+    PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
   );
   Port ( 
     clk, rst : in STD_LOGIC;
@@ -28,7 +31,9 @@ architecture Behavioral of UART_Unit is
       IN_FREQ_HZ : integer := 12000000;
       BAUD_FREQ_HZ : integer := 9600;
       DATA_BITS : integer := 8;
-      STOP_BITS : integer := 1
+      STOP_BITS : integer := 1;
+      PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+      PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
       clk, rst : in std_logic;
@@ -43,7 +48,9 @@ architecture Behavioral of UART_Unit is
       IN_FREQ_HZ : integer := 12000000;
       BAUD_FREQ_HZ : integer := 9600;
       DATA_BITS : integer := 8;
-      STOP_BITS : integer := 1
+      STOP_BITS : integer := 1;
+      PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
+      PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
       clk, rst : in std_logic;
@@ -53,7 +60,7 @@ architecture Behavioral of UART_Unit is
     );
   end component;
 begin
-  TRANSMITTER: UART_Transmitter generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS) port map(clk, rst, send_data, write_en, full, TX_pin);
-  RECEIVER: UART_Receiver generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS) port map(clk, rst, RX_pin, received_data, new_data_received);
+  TRANSMITTER: UART_Transmitter generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, rst, send_data, write_en, full, TX_pin);
+  RECEIVER: UART_Receiver generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, rst, RX_pin, received_data, new_data_received);
   
 end Behavioral;
