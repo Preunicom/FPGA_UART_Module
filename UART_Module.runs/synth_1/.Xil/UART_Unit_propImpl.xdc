@@ -45,3 +45,7 @@ set_property src_info {type:XDC file:1 line:66 export:INPUT save:INPUT read:READ
 set_property -dict { PACKAGE_PIN T1    IOSTANDARD LVCMOS33 } [get_ports { new_data_received }]; #IO_L3P_T0_DQS_34 Sch=pio[29]
 set_property src_info {type:XDC file:1 line:68 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN U1    IOSTANDARD LVCMOS33 } [get_ports { RX_pin }]; #IO_L3N_T0_DQS_34 Sch=pio[31]
+set_property src_info {type:XDC file:1 line:70 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN V2    IOSTANDARD LVCMOS33 } [get_ports { frame_error }]; #IO_L5P_T0_34 Sch=pio[33]
+set_property src_info {type:XDC file:1 line:71 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN W3    IOSTANDARD LVCMOS33 } [get_ports { parity_error }]; #IO_L6N_T0_VREF_34 Sch=pio[34]
