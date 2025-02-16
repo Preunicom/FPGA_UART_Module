@@ -20,6 +20,7 @@ entity UART_Unit is
     TX_pin : out std_logic;
 
     received_data : out std_logic_vector(DATA_BITS-1 downto 0);
+    frame_error, parity_error : out std_logic;
     new_data_received : out std_logic;
     RX_pin : in std_logic
   );
@@ -30,6 +31,7 @@ architecture Behavioral of UART_Unit is
     Generic (
       IN_FREQ_HZ : integer := 12000000;
       BAUD_FREQ_HZ : integer := 9600;
+      -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
       DATA_BITS : integer := 8;
       STOP_BITS : integer := 1;
       PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
@@ -47,6 +49,7 @@ architecture Behavioral of UART_Unit is
     Generic(
       IN_FREQ_HZ : integer := 12000000;
       BAUD_FREQ_HZ : integer := 9600;
+      -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
       DATA_BITS : integer := 8;
       STOP_BITS : integer := 1;
       PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
@@ -56,11 +59,12 @@ architecture Behavioral of UART_Unit is
       clk, rst : in std_logic;
       serial_in : in std_logic;
       parallel_out : out std_logic_vector(DATA_BITS-1 downto 0);
+      frame_error, parity_error : out std_logic;
       new_data : out std_logic
     );
   end component;
 begin
   TRANSMITTER: UART_Transmitter generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, rst, send_data, write_en, full, TX_pin);
-  RECEIVER: UART_Receiver generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, rst, RX_pin, received_data, new_data_received);
+  RECEIVER: UART_Receiver generic map(IN_FREQ_HZ, BAUD_FREQ_HZ, DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, rst, RX_pin, received_data, frame_error, parity_error, new_data_received);
   
 end Behavioral;

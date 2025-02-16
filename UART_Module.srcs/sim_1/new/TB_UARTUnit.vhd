@@ -9,6 +9,7 @@ architecture TESTBENCH of TB_UARTUnit is
       Generic (
         IN_FREQ_HZ : integer := 12000000;
         BAUD_FREQ_HZ : integer := 9600;
+        -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
         DATA_BITS : integer := 8;
         STOP_BITS : integer := 1;
         PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
@@ -22,6 +23,7 @@ architecture TESTBENCH of TB_UARTUnit is
         TX_pin : out std_logic;
     
         received_data : out std_logic_vector(DATA_BITS-1 downto 0);
+        frame_error, parity_error : out std_logic;
         new_data_received : out std_logic;
         RX_pin : in std_logic
       );
@@ -33,11 +35,12 @@ architecture TESTBENCH of TB_UARTUnit is
     signal tb_TX_pin : std_logic;
         
     signal tb_received_data : std_logic_vector(4 downto 0);
+    signal tb_frame_error, tb_parity_error : std_logic;
     signal tb_new_data_received : std_logic;
     signal tb_RX_pin : std_logic;
     constant tbase : time := 83 ns;
 begin
-    COMP: UART_Unit generic map(12000000, 9600, 5, 2, 1, 0) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_new_data_received, tb_RX_pin);
+    COMP: UART_Unit generic map(12000000, 9600, 5, 2, 1, 0) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_frame_error, tb_parity_error, tb_new_data_received, tb_RX_pin);
     
     process
     begin
