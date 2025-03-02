@@ -4,6 +4,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity UART_Unit is
   Generic (
+    -- IN_FREQ_HZ has to be minimum 2*OUT_FREQ_HZ
     IN_FREQ_HZ : integer := 12000000;
     BAUD_FREQ_HZ : integer := 9600;
     -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
