@@ -93,7 +93,7 @@ read_vhdl -library xil_defaultlib {
   /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/Prescaler.vhd
   /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/Serializer.vhd
   /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/UART_Receiver.vhd
-  /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/UART_Sender.vhd
+  /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/UART_Transmitter.vhd
   /home/user/Data/UART_Module/UART_Module.srcs/sources_1/new/UART_Unit.vhd
 }
 OPTRACE "Adding files" END { }

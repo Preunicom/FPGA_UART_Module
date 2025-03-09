@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-| Date         : Sat Feb 15 17:29:14 2025
-| Host         : 2dd0a4f57aa3 running 64-bit Ubuntu 22.04.5 LTS
+| Date         : Sun Feb 16 18:59:49 2025
+| Host         : 66d1639a5fe0 running 64-bit Ubuntu 22.04.5 LTS
 | Command      : report_control_sets -verbose -file UART_Unit_control_sets_placed.rpt
 | Design       : UART_Unit
 | Device       : xc7a35t
@@ -27,7 +27,7 @@ Table of Contents
 |    Minimum number of control sets                        |     8 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    22 |
+| Unused register locations in slices containing registers |    23 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -44,10 +44,10 @@ Table of Contents
 | >= 4 to < 6        |     0 |
 | >= 6 to < 8        |     0 |
 | >= 8 to < 10       |     1 |
-| >= 10 to < 12      |     2 |
-| >= 12 to < 14      |     0 |
-| >= 14 to < 16      |     1 |
-| >= 16              |     3 |
+| >= 10 to < 12      |     1 |
+| >= 12 to < 14      |     1 |
+| >= 14 to < 16      |     0 |
+| >= 16              |     4 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -59,10 +59,10 @@ Table of Contents
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | No           | No                    | No                     |               2 |            2 |
-| No           | No                    | Yes                    |              46 |           12 |
+| No           | No                    | Yes                    |              53 |           14 |
 | No           | Yes                   | No                     |              64 |           16 |
 | Yes          | No                    | No                     |               0 |            0 |
-| Yes          | No                    | Yes                    |              18 |            5 |
+| Yes          | No                    | Yes                    |              18 |            8 |
 | Yes          | Yes                   | No                     |               0 |            0 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
@@ -70,17 +70,17 @@ Table of Contents
 4. Detailed Control Set Information
 -----------------------------------
 
-+---------------------------------------+---------------------------------------------------------+---------------------------------+------------------+----------------+--------------+
-|              Clock Signal             |                      Enable Signal                      |         Set/Reset Signal        | Slice Load Count | Bel Load Count | Bels / Slice |
-+---------------------------------------+---------------------------------------------------------+---------------------------------+------------------+----------------+--------------+
-|  clk_IBUF_BUFG                        |                                                         |                                 |                2 |              2 |         1.00 |
-|  clk_IBUF_BUFG                        | RECE/DESER/data_valid                                   | rst_IBUF                        |                3 |              8 |         2.67 |
-|  clk_IBUF_BUFG                        |                                                         | rst_IBUF                        |                4 |             10 |         2.50 |
-|  clk_IBUF_BUFG                        | SEND/BRSER/shift_reg_data_ready_change_detected_i_1_n_0 | rst_IBUF                        |                2 |             10 |         5.00 |
-|  SEND/PRES/clk_prescaled_intern_reg_0 |                                                         | rst_IBUF                        |                4 |             15 |         3.75 |
-|  RECE/PRES/CLK                        |                                                         | rst_IBUF                        |                4 |             21 |         5.25 |
-|  clk_IBUF_BUFG                        |                                                         | RECE/PRES/counter[0]_i_1__0_n_0 |                8 |             32 |         4.00 |
-|  clk_IBUF_BUFG                        |                                                         | SEND/PRES/counter[0]_i_1_n_0    |                8 |             32 |         4.00 |
-+---------------------------------------+---------------------------------------------------------+---------------------------------+------------------+----------------+--------------+
++----------------------------------------------+-----------------------------------+-------------------------------------+------------------+----------------+--------------+
+|                 Clock Signal                 |           Enable Signal           |           Set/Reset Signal          | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------------------------------------+-----------------------------------+-------------------------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG                               |                                   |                                     |                2 |              2 |         1.00 |
+|  clk_IBUF_BUFG                               | TRANSMITTER/BRSER/data[7]_i_1_n_0 | rst_IBUF                            |                2 |              8 |         4.00 |
+|  clk_IBUF_BUFG                               | RECEIVER/DESER/data_ready_intern  | rst_IBUF                            |                6 |             10 |         1.67 |
+|  clk_IBUF_BUFG                               |                                   | rst_IBUF                            |                5 |             12 |         2.40 |
+|  TRANSMITTER/PRES/clk_prescaled_intern_reg_0 |                                   | rst_IBUF                            |                5 |             16 |         3.20 |
+|  RECEIVER/PRES/CLK                           |                                   | rst_IBUF                            |                4 |             25 |         6.25 |
+|  clk_IBUF_BUFG                               |                                   | TRANSMITTER/PRES/counter[0]_i_1_n_0 |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG                               |                                   | RECEIVER/PRES/counter[0]_i_1__1_n_0 |                8 |             32 |         4.00 |
++----------------------------------------------+-----------------------------------+-------------------------------------+------------------+----------------+--------------+
 
 

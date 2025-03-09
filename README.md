@@ -2,6 +2,10 @@
 
 UART_Module with transmitter und receiver.
 
-## Current status
-Only 9600 Baud with 1 Stop Bit and no Parity. 
-No error handling (frame error, etc.)
+# Support
+
+UART_Module supports:
+- BAUD rates less or equal than input clock frequency
+- 5-9 data bits
+- parity (even/odd/no)
+- 1 or 2 stop bits

@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-| Date                      : Sat Feb 15 17:29:13 2025
-| Host                      : 2dd0a4f57aa3 running 64-bit Ubuntu 22.04.5 LTS
+| Date                      : Sun Feb 16 18:59:49 2025
+| Host                      : 66d1639a5fe0 running 64-bit Ubuntu 22.04.5 LTS
 | Command                   : report_io -file UART_Unit_io_placed.rpt
 | Design                    : UART_Unit
 | Device                    : xc7a35t
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            23 |
+|            25 |
 +---------------+
 
 
@@ -236,7 +236,7 @@ Table of Contents
 | U18        |                   | High Range | IO_L18N_T2_A11_D27_14        | User IO       |             |      14 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | U19        |                   | High Range | IO_L15P_T2_DQS_RDWR_B_14     | User IO       |             |      14 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | V1         |                   | High Range | VCCO_34                      | VCCO          |             |      34 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
-| V2         |                   | High Range | IO_L5P_T0_34                 | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| V2         | frame_error       | High Range | IO_L5P_T0_34                 | OUTPUT        | LVCMOS33    |      34 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | V3         |                   | High Range | IO_L6P_T0_34                 | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | V4         |                   | High Range | IO_L11N_T1_SRCC_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | V5         |                   | High Range | IO_L16N_T2_34                | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -256,7 +256,7 @@ Table of Contents
 | V19        |                   | High Range | IO_L15N_T2_DQS_DOUT_CSO_B_14 | User IO       |             |      14 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W1         |                   |            | GND                          | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | W2         |                   | High Range | IO_L5N_T0_34                 | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| W3         |                   | High Range | IO_L6N_T0_VREF_34            | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| W3         | parity_error      | High Range | IO_L6N_T0_VREF_34            | OUTPUT        | LVCMOS33    |      34 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | W4         |                   | High Range | IO_L12N_T1_MRCC_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W5         |                   | High Range | IO_L12P_T1_MRCC_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W6         |                   | High Range | IO_L13N_T2_MRCC_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |

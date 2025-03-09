@@ -6,7 +6,7 @@ vhdl xil_defaultlib  \
 "../../../../UART_Module.srcs/sources_1/new/Prescaler.vhd" \
 "../../../../UART_Module.srcs/sources_1/new/Serializer.vhd" \
 "../../../../UART_Module.srcs/sources_1/new/UART_Receiver.vhd" \
-"../../../../UART_Module.srcs/sources_1/new/UART_Sender.vhd" \
+"../../../../UART_Module.srcs/sources_1/new/UART_Transmitter.vhd" \
 "../../../../UART_Module.srcs/sources_1/new/UART_Unit.vhd" \
 "../../../../UART_Module.srcs/sim_1/new/TB_UARTUnit.vhd" \
 
