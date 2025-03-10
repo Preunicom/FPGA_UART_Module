@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Prescaler is
   Generic(
-    -- IN_FREQ_HZ has to be minimum 2*OUT_FREQ_HZ
+    -- IN_FREQ_HZ has to be minimum 2*BAUD_FREQ_HZ
     IN_FREQ_HZ : integer := 12000000;
     OUT_FREQ_HZ : integer := 9600
   );
