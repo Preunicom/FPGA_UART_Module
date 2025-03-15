@@ -4,7 +4,7 @@ use IEEE.std_logic_unsigned.ALL;
 
 entity Deserializer is
   Generic(
-    -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
+    -- DATA_BITS + STOP_BITS + PARITY_ACTIVE <= 15 has to be fullfilled
     DATA_BITS : integer := 8;
     STOP_BITS : integer := 1;
     PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
@@ -65,7 +65,7 @@ begin
           if (reg(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto DATA_BITS+PARITY_ACTIVE+2) & serial_in) = stop_bits_suffix then
             frame_error <= '0';
           else
-              frame_error <= '1';
+            frame_error <= '1';
           end if;
         end if;
         if PARITY_ACTIVE = 1 then

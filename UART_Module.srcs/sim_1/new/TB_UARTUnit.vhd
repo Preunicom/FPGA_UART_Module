@@ -38,9 +38,11 @@ architecture TESTBENCH of TB_UARTUnit is
     signal tb_frame_error, tb_parity_error : std_logic;
     signal tb_new_data_received : std_logic;
     signal tb_RX_pin : std_logic;
-    constant tbase : time := 83 ns;
+    constant tbase : time := 10 ns;
+    constant tbase2 : time := 1 us;
+    signal tb_clk_exp_1MHz : std_logic;
 begin
-    COMP: UART_Unit generic map(12000000, 9600, 5, 2, 1, 0) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_frame_error, tb_parity_error, tb_new_data_received, tb_RX_pin);
+    COMP: UART_Unit generic map(100000000, 1000000, 5, 2, 1, 0) port map(tb_clk, tb_rst, tb_send_data, tb_write_en, tb_full, tb_TX_Pin, tb_received_data, tb_frame_error, tb_parity_error, tb_new_data_received, tb_RX_pin);
     
     process
     begin
@@ -49,7 +51,15 @@ begin
         tb_clk <= '0';
         wait for tbase/2;
     end process;
-        
+
+    process
+    begin
+      tb_clk_exp_1MHz <= '1';
+      wait for tbase2/2;
+      tb_clk_exp_1MHz <= '0';
+      wait for tbase2/2;
+    end process;
+    
     tb_rst <= '1', '0' after 2*tbase;
     tb_send_data <= "01011";
     tb_write_en <= '1';
