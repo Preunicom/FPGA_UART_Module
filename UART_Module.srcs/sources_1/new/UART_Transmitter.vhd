@@ -7,7 +7,7 @@ entity UART_Transmitter is
     -- IN_FREQ_HZ has to be minimum 2*BAUD_FREQ_HZ
     IN_FREQ_HZ : integer := 12000000;
     BAUD_FREQ_HZ : integer := 9600;
-    -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
+    -- DATA_BITS + STOP_BITS + PARITY_ACTIVE <= 15 has to be fullfilled
     DATA_BITS : integer := 8;
     STOP_BITS : integer := 1;
     PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
@@ -48,7 +48,7 @@ architecture Behavioral of UART_Transmitter is
   end component;
   component Serializer
     Generic(
-      -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
+      -- DATA_BITS + STOP_BITS + PARITY_ACTIVE <= 15 has to be fullfilled
       DATA_BITS : integer := 8;
       STOP_BITS : integer := 1;
       PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity

@@ -4,7 +4,7 @@ use IEEE.std_logic_unsigned.ALL;
 
 entity Deserializer is
   Generic(
-    -- DATA_BITS + STOP_BITS <= 15 has to be fullfilled
+    -- DATA_BITS + STOP_BITS + PARITY_ACTIVE <= 15 has to be fullfilled
     DATA_BITS : integer := 8;
     STOP_BITS : integer := 1;
     PARITY_ACTIVE : integer := 0; -- 0: No Parity; 1: Even or Odd Parity
