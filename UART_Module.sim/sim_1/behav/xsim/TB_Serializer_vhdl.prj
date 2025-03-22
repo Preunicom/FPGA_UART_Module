@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../UART_Module.srcs/sources_1/new/Serializer.vhd" \
-"../../../../UART_Module.srcs/sim_1/new/TB_Serializer.vhd" \
-
-# Do not sort compile order
-nosort

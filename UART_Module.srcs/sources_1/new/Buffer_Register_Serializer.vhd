@@ -18,46 +18,55 @@ end Buffer_Register_Serializer;
 architecture Behavioral of Buffer_Register_Serializer is
   signal data : std_logic_vector(DATA_BITS-1 downto 0) := (others => '1');
   signal full_int : std_logic := '0';
-  signal last_serializer_ready_status : std_logic := '1';
-  signal serializer_ready_status_change_detected : std_logic := '1';
+  signal last_data_not_needed_anymore : std_logic := '1';
+  signal data_not_needed_anymore_change_detected : std_logic := '1';
 begin
   
   BUFS: process(clk, rst)
   begin
     if rst = '1' then
-      data <= (others => '1');
+      -- Clear outputs
       data_out <= (others => '1');
       full <= '0';
+      -- Clear intern data
+      data <= (others => '1');
       full_int <= '0';
-      last_serializer_ready_status <= '1';
-      serializer_ready_status_change_detected <= '1';
+      data_not_needed_anymore_change_detected <= '1';
     elsif rising_edge(clk) then
-      serializer_ready_status_change_detected <= serializer_ready_status_change_detected;
-      last_serializer_ready_status <= data_not_needed_anymore;
-      data_out <= data;
-      data <= data;
+      -- Set default outputs
       -- Default case:
       -- current data not sent
       --> Wait for current data sent
+      data_out <= data;
       full <= full_int;
-      full_int <= full_int;
-
-      if (data_not_needed_anymore = '1' and last_serializer_ready_status = '0') or serializer_ready_status_change_detected = '1' then
-        serializer_ready_status_change_detected <= '1';
+      if (last_data_not_needed_anymore = '0' and data_not_needed_anymore = '1') or data_not_needed_anymore_change_detected = '1' then
+        -- Remember this change
+        data_not_needed_anymore_change_detected <= '1';
         -- current data sent
         --> Get new data
         full <= '0'; --> automatically sets write enable to false at shift reg
         full_int <= '0';
         if write_enable = '1' then
           -- new data available to load
-          --> Get data if current data sent
+          --> Get data from input
           data <= data_in;
           data_out <= data_in;
+          -- Set full flag
           full_int <= '1';
           full <= '1';
-          serializer_ready_status_change_detected <= '0';
+          -- Forget this change
+          data_not_needed_anymore_change_detected <= '0';
         end if; 
       end if;
+    end if;
+  end process;
+
+  EDGE_DETECTION: process(clk, rst)
+  begin
+    if rst = '1' then
+      last_data_not_needed_anymore <= '1';
+    elsif rising_edge(clk) then
+      last_data_not_needed_anymore <= data_not_needed_anymore;
     end if;
   end process;
 
