@@ -106,7 +106,7 @@ begin
   EDGE_DETECTION: process(clk, rst)
   begin
     if rst = '1' then
-      last_serial_in <= '0';
+      last_serial_in <= '1';
     elsif rising_edge(clk) then
       last_serial_in <= serial_in;
     end if;

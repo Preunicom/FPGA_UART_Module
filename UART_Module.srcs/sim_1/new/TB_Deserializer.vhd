@@ -47,7 +47,12 @@ begin
     wait;
   end process;
 
-  tb_rst <= '1', '0' after 1*tbase;
+  -- reset Deserializer to demonstrate real usage while idle
+  tb_rst <= '1', '0' after 20*tbase,
+    '1' after 32*tbase, '0' after 40*tbase,
+    '1' after 52*tbase, '0' after 60*tbase,
+    '1' after 72*tbase, '0' after 80*tbase,
+    '1' after 92*tbase, '0' after 100*tbase;
 
   tb_serial_in <= '1',
     '0' after 21*tbase, '0' after 22*tbase, '0' after 23*tbase, '0' after 24*tbase, '0' after 25*tbase, '1' after 26*tbase, '1' after 27*tbase, '1' after 28*tbase, '1' after 29*tbase, '0' after 30*tbase, '1' after 31*tbase, -- (0xF0)
