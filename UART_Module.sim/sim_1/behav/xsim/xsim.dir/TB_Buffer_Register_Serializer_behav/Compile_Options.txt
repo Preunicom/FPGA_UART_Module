@@ -1,0 +1,1 @@
+--incr --debug "typical" --relax --mt "8" -L "xil_defaultlib" -L "secureip" --snapshot "TB_Buffer_Register_Serializer_behav" "xil_defaultlib.TB_Buffer_Register_Serializer" -log "elaborate.log" 
