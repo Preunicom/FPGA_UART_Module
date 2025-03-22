@@ -30,7 +30,7 @@ begin
     variable parity : std_logic;
   begin
     if rst = '1' then
-      -- Clear intern information
+      -- Clear intern data
       parity := '0';
       counter <= DATA_BITS+STOP_BITS+PARITY_ACTIVE+1;
       reg <= (others => '0');
@@ -47,7 +47,7 @@ begin
       data_valid <= '0';
       frame_error <= '0';
       parity_error <= '0';
-      -- Shift the shift register (LSB --> shift right and put input to highest bit)
+      -- Shift the shift register (LSB --> shift right and put input to most significant bit of reg)
       reg <= serial_in & reg(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto 1);
       -- If counter greater as the amount of UART message bits this means it was already outputted
       --> Do not count until there is a new start bit
