@@ -2,6 +2,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity TB_UART_Module is
+  Port (
+    signal tb_error : out std_logic
+  );
 end TB_UART_Module;
 
 architecture TESTBENCH of TB_UART_Module is
@@ -35,7 +38,6 @@ architecture TESTBENCH of TB_UART_Module is
       tb_error : out std_logic
     );
   end component;
-  signal tb_error : std_logic;
   signal tb_error_TB_UARTUnit : std_logic;
   signal tb_error_TB_Prescaler : std_logic;
   signal tb_error_TB_Serializer : std_logic;
