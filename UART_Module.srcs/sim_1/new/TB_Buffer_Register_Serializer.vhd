@@ -43,7 +43,7 @@ begin
     wait;
   end process;
 
-  tb_rst <= '1', '0' after 1*tbase;
+  tb_rst <= '1', '0' after 2*tbase;
 
   tb_write_enable <= '0',
     '1' after 10*tbase, '0' after 11*tbase,
@@ -57,17 +57,17 @@ begin
     "01000011" after 25*tbase, "00000000" after 26*tbase, -- will not be sent
     "11110000" after 30*tbase, "00000000" after 31*tbase;
 
-  tb_data_not_needed_anymore <= '0',
+  tb_data_not_needed_anymore <= 'U', '0' after 1*tbase,
     '1' after 18*tbase, '0' after 19*tbase,
     '1' after 30*tbase, '0' after 31*tbase,
     '1' after 40*tbase, '0' after 41*tbase;
 
-  tb_exp_full <= '0',
+  tb_exp_full <= 'U', '0' after 1*tbase,
     '1' after 10*tbase, '0' after 18*tbase,
     '1' after 21*tbase, '0' after 30*tbase,
     '1' after 30*tbase, '0' after 40*tbase;
 
-  tb_exp_data_out <= "11111111",
+  tb_exp_data_out <= "UUUUUUUU", "11111111" after 1*tbase,
     "01110011" after 10*tbase,
     "01100011" after 21*tbase,
     "11110000" after 30*tbase;

@@ -45,7 +45,7 @@ begin
     wait;
   end process;
 
-  tb_rst <= '1', '0' after 1*tbase;
+  tb_rst <= '1', '0' after 2*tbase;
 
   tb_write_enable <= '0',
     '1' after 20*tbase, '0' after 21*tbase,

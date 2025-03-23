@@ -48,7 +48,7 @@ begin
     wait;
   end process;
 
-  tb_rst <= '1', '0' after 1*tbase;
+  tb_rst <= '1', '0' after 2*tbase;
 
   tb_parallel_in <= "00000000",
     "10100010" after 10*tbase, "00000000" after 15*tbase,
@@ -78,28 +78,28 @@ begin
     '1' after 70*tbase, '0' after 75*tbase,
     '1' after 90*tbase, '0' after 95*tbase;
 
-  tb_exp_frame_error_out <= '0',
+  tb_exp_frame_error_out <= 'U', '0' after 1*tbase,
     '0' after 10*tbase,
     '1' after 30*tbase,
     '0' after 50*tbase,
     '0' after 70*tbase,
     '0' after 90*tbase;
 
-   tb_exp_parity_error_out <= '0',
+   tb_exp_parity_error_out <= 'U', '0' after 1*tbase,
     '0' after 10*tbase,
     '0' after 30*tbase,
     '0' after 50*tbase,
     '1' after 70*tbase,
     '0' after 90*tbase;
 
-  tb_exp_new_data <= '0',
+  tb_exp_new_data <= 'U', '0' after 1*tbase,
     '1' after 10*tbase, '0' after 15*tbase,
     '1' after 30*tbase, '0' after 35*tbase,
     '1' after 50*tbase, '0' after 55*tbase,
     '1' after 70*tbase, '0' after 75*tbase,
     '1' after 90*tbase, '0' after 95*tbase;
 
-  tb_exp_parallel_out <= "00000000",
+  tb_exp_parallel_out <= "UUUUUUUU", "00000000" after 1*tbase,
     "10100010" after 10*tbase,
     "00001111" after 30*tbase,
     "00001111" after 50*tbase,

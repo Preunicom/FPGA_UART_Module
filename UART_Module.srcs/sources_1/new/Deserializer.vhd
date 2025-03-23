@@ -29,6 +29,7 @@ begin
   DESER: process(clk, rst)
     variable parity : std_logic;
   begin
+    -- Async reset because Deserializer is used prescaled
     if rst = '1' then
       -- Clear intern data
       parity := '0';
@@ -84,21 +85,21 @@ begin
         end if;
         -- Calculate parity error
         if PARITY_ACTIVE = 1 then
-            -- Calculate parity incl. parity bit
-            for i in 2 to DATA_BITS+2 loop
-              parity := parity xor reg(i);
-            end loop;
-            if (parity = '1' and PARITY_MODE = 1) or (parity = '0' and PARITY_MODE = 0) then
-              -- parity ok
-              parity_error <= '0';
-            else 
-              -- parity not ok
-              parity_error <= '1';
-            end if;
-          else  
-            -- no parity
+          -- Calculate parity incl. parity bit
+          for i in 2 to DATA_BITS+2 loop
+            parity := parity xor reg(i);
+          end loop;
+          if (parity = '1' and PARITY_MODE = 1) or (parity = '0' and PARITY_MODE = 0) then
+            -- parity ok
             parity_error <= '0';
+          else 
+            -- parity not ok
+            parity_error <= '1';
           end if;
+        else  
+          -- no parity
+          parity_error <= '0';
+        end if;
       end if;
     end if;
   end process;
