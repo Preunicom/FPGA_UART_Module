@@ -70,7 +70,7 @@ architecture Behavioral of UART_Receiver is
   signal data_ready_intern : std_logic;
 
   signal active_search_new : std_logic := '1';
-  signal search_reset : std_logic := '0';
+  signal search_reset : std_logic := '1';
   signal rst_combined : std_logic := '0';
 begin
   PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst_combined, prescaled_clk_intern);
@@ -81,20 +81,26 @@ begin
   SEARCH: process(clk)
   begin
     if rising_edge(clk) then
-      search_reset <= '0';
-      if data_ready_intern = '1' then
-        -- last bit of package read
-        --> Search for new package started
-        active_search_new <= '1';
-      end if;
-      if active_search_new = '1' then
-        -- Reseting as long as UART idle
+      if rst = '1' then
+        -- Idle when reseted
         search_reset <= '1';
-        -- End search and reset if falling edge on RX pin is detected  (start bit)
-        -- (pin is always 1 if idle, so 0 has to be the first bit --> No further edge testing needed)
-        if serial_in = '0' then
-          search_reset <= '0';
-          active_search_new <= '0';
+        active_search_new <= '1';
+      else
+        search_reset <= '0';
+        if data_ready_intern = '1' then
+          -- last bit of package read
+          --> Search for new package started
+          active_search_new <= '1';
+        end if;
+        if active_search_new = '1' then
+          -- Reseting as long as UART idle
+          search_reset <= '1';
+          -- End search and reset if falling edge on RX pin is detected  (start bit)
+          -- (pin is always 1 if idle, so 0 has to be the first bit --> No further edge testing needed)
+          if serial_in = '0' then
+            search_reset <= '0';
+            active_search_new <= '0';
+          end if;
         end if;
       end if;
     end if;

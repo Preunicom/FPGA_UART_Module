@@ -27,12 +27,12 @@ architecture TESTBENCH of TB_Prescaler is
 begin
   COMP: Prescaler generic map(10000000, 1000000) port map(tb_clk, tb_rst, tb_clk_prescaled);
 
-  tb_rst <= '1', '0' after 1*tbase;
+  tb_rst <= '1', '0' after 2*tbase;
 
   -- 10 MHz
   CLOCK: process
   begin
-    for i in 1010 downto 0 loop
+    for i in 1012 downto 0 loop
       tb_clk <= '1';
       wait for tbase/2;
       tb_clk <= '0';
@@ -46,7 +46,7 @@ begin
   begin
     wait for 1*tbase;
     tb_exp_clk_prescaled <= '0';
-    wait for 4*tbase;
+    wait for 5*tbase;
     for i in 100 downto 0 loop
       tb_exp_clk_prescaled <= '1';
       wait for tbase_exp/2;

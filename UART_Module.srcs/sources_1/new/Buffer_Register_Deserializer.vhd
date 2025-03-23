@@ -22,33 +22,35 @@ architecture Behavioral of Buffer_Register_Deserializer is
   signal frame_error_buf, parity_error_buf : std_logic;
 begin
 
-  BUFDES: process(clk, rst)
+  BUFDES: process(clk)
   begin
-    if rst = '1' then
-      -- Clear ouputs
-      parallel_out <= (others => '0');
-      frame_error_out <= '0';
-      parity_error_out <= '0';
-      new_data <= '0';
-      -- Clear intern data
-      data <= (others => '0');
-      frame_error_buf <= '0';
-      parity_error_buf <= '0';
-    elsif rising_edge(clk) then
-      -- Set outputs
-      new_data <= '0';
-      parallel_out <= data;
-      frame_error_out <= frame_error_buf;
-      parity_error_out <= parity_error_buf;
-      if write_en = '1' then
-        -- Set new register data 
-        new_data <= '1';
-        data <= parallel_in;
-        parallel_out <= parallel_in;
-        frame_error_buf <= frame_error_in;
-        frame_error_out <= frame_error_in;
-        parity_error_buf <= parity_error_in;
-        parity_error_out <= parity_error_in;
+    if rising_edge(clk) then
+      if rst = '1' then
+        -- Clear ouputs
+        parallel_out <= (others => '0');
+        frame_error_out <= '0';
+        parity_error_out <= '0';
+        new_data <= '0';
+        -- Clear intern data
+        data <= (others => '0');
+        frame_error_buf <= '0';
+        parity_error_buf <= '0';
+      else
+        -- Set outputs
+        new_data <= '0';
+        parallel_out <= data;
+        frame_error_out <= frame_error_buf;
+        parity_error_out <= parity_error_buf;
+        if write_en = '1' then
+          -- Set new register data 
+          new_data <= '1';
+          data <= parallel_in;
+          parallel_out <= parallel_in;
+          frame_error_buf <= frame_error_in;
+          frame_error_out <= frame_error_in;
+          parity_error_buf <= parity_error_in;
+          parity_error_out <= parity_error_in;
+        end if;
       end if;
     end if;
   end process;

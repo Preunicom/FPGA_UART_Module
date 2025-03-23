@@ -27,6 +27,7 @@ begin
   SER: process(clk, rst)
     variable parity : std_logic; -- 0: Even number of ones; 1: Odd number of ones
   begin
+    -- Async reset because Serializer is used prescaled
     if rst = '1' then
       -- Clear intern data
       parity := '0';
