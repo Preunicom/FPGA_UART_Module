@@ -71,10 +71,11 @@ architecture Behavioral of UART_Receiver is
 
   signal active_search_new : std_logic := '1';
   signal search_reset : std_logic := '0';
+  signal rst_combined : std_logic := '0';
 begin
-  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, search_reset or rst, prescaled_clk_intern);
+  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst_combined, prescaled_clk_intern);
   BRDESER: Buffer_Register_Deserializer generic map(DATA_BITS) port map(clk, rst, data_intern, frame_error_intern, parity_error_intern, data_ready_intern, parallel_out, frame_error, parity_error, new_data);
-  DESER: Deserializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, search_reset or rst, serial_in, data_intern, frame_error_intern, parity_error_intern, data_ready_intern);
+  DESER: Deserializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, rst_combined, serial_in, data_intern, frame_error_intern, parity_error_intern, data_ready_intern);
 
   -- Resets Prescaler when new UART package was detected to get data from mid of bits
   SEARCH: process(clk)
@@ -98,5 +99,7 @@ begin
       end if;
     end if;
   end process;
+
+  rst_combined <= rst or search_reset;
   
 end Behavioral;
