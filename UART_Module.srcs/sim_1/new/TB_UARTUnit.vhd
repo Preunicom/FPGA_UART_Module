@@ -76,7 +76,7 @@ begin
     '1' after 10*tbase, '0' after 17*tbase,
     '1' after 20*tbase, '0' after 127*tbase;
 
-  tb_exp_TX_pin <= '1',
+  tb_exp_TX_pin <= 'U', '1' after 1*tbase,
     '0' after 26*tbase, '0' after 36*tbase, '1' after 46*tbase, '1' after 56*tbase, '1' after 66*tbase, '0' after 76*tbase, '0' after 86*tbase, '1' after 96*tbase, '1' after 106*tbase, '1' after 116*tbase, '1' after 126*tbase,
     '0' after 136*tbase, '0' after 146*tbase, '1' after 156*tbase, '0' after 166*tbase, '1' after 176*tbase, '0' after 186*tbase, '1' after 196*tbase, '0' after 206*tbase, '1' after 216*tbase, '0' after 226*tbase, '1' after 236*tbase;
 
@@ -90,14 +90,14 @@ begin
     '0' after 2025*tbase, '1' after 2035*tbase, '1' after 2045*tbase, '1' after 2055*tbase, '1' after 2065*tbase, '0' after 2075*tbase, '0' after 2085*tbase, '1' after 2095*tbase, '1' after 2105*tbase, '0' after 2115*tbase, '1' after 2125*tbase, -- 0xCF
     '0' after 2135*tbase, '1' after 2145*tbase, '1' after 2155*tbase, '0' after 2165*tbase, '1' after 2175*tbase, '0' after 2185*tbase, '1' after 2195*tbase, '0' after 2205*tbase, '1' after 2215*tbase, '1' after 2225*tbase, '1' after 2235*tbase; -- 0xAB
 
-  -- is high as long as idle because reset us pulled
+  -- is high as long as idle because reset is pulled
   tb_exp_new_data_received <= 'U', '0' after 1*tbase,
-    '1' after 131*tbase, '0' after 133*tbase,
-    '1' after 241*tbase, '0' after 243*tbase,
-    '1' after 1131*tbase, '0' after 1133*tbase,
-    '1' after 1241*tbase, '0' after 1247*tbase,
-    '1' after 2131*tbase, '0' after 2133*tbase,
-    '1' after 2241*tbase, '0' after 2243*tbase;
+    '1' after 131*tbase, '0' after 134*tbase,
+    '1' after 241*tbase, '0' after 244*tbase,
+    '1' after 1131*tbase, '0' after 1134*tbase,
+    '1' after 1241*tbase, '0' after 1248*tbase,
+    '1' after 2131*tbase, '0' after 2134*tbase,
+    '1' after 2241*tbase, '0' after 2244*tbase;
 
   tb_exp_received_data <= "UUUUUUUU", "00000000" after 1*tbase,
     x"CF" after 131*tbase,

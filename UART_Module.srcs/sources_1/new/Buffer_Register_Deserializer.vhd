@@ -18,8 +18,6 @@ entity Buffer_Register_Deserializer is
 end Buffer_Register_Deserializer;
 
 architecture Behavioral of Buffer_Register_Deserializer is
-  signal data : std_logic_vector(DATA_BITS-1 downto 0);
-  signal frame_error_buf, parity_error_buf : std_logic;
 begin
 
   BUFDES: process(clk)
@@ -31,24 +29,14 @@ begin
         frame_error_out <= '0';
         parity_error_out <= '0';
         new_data <= '0';
-        -- Clear intern data
-        data <= (others => '0');
-        frame_error_buf <= '0';
-        parity_error_buf <= '0';
       else
         -- Set outputs
         new_data <= '0';
-        parallel_out <= data;
-        frame_error_out <= frame_error_buf;
-        parity_error_out <= parity_error_buf;
         if write_en = '1' then
           -- Set new register data 
           new_data <= '1';
-          data <= parallel_in;
           parallel_out <= parallel_in;
-          frame_error_buf <= frame_error_in;
           frame_error_out <= frame_error_in;
-          parity_error_buf <= parity_error_in;
           parity_error_out <= parity_error_in;
         end if;
       end if;

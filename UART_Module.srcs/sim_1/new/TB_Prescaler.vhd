@@ -16,16 +16,16 @@ architecture TESTBENCH of TB_Prescaler is
     );
     port (
       clk, rst      : in  STD_LOGIC;
-      clk_prescaled : out STD_LOGIC
+      clk_en_prescaled : out STD_LOGIC
     );
   end component;
   signal tb_clk, tb_rst : STD_LOGIC;
-  signal tb_clk_prescaled : STD_LOGIC;
-  signal tb_exp_clk_prescaled : STD_LOGIC := 'U';
+  signal tb_clk_en_prescaled : STD_LOGIC;
+  signal tb_exp_clk_en_prescaled : STD_LOGIC := 'U';
   constant tbase : time := 100 ns;
   constant tbase_exp : time := 1000 ns;
 begin
-  COMP: Prescaler generic map(10000000, 1000000) port map(tb_clk, tb_rst, tb_clk_prescaled);
+  COMP: Prescaler generic map(10000000, 1000000) port map(tb_clk, tb_rst, tb_clk_en_prescaled);
 
   tb_rst <= '1', '0' after 2*tbase;
 
@@ -45,18 +45,18 @@ begin
   CLOCK_EXP: process
   begin
     wait for 1*tbase;
-    tb_exp_clk_prescaled <= '0';
-    wait for 5*tbase;
+    tb_exp_clk_en_prescaled <= '0';
+    wait for 4*tbase;
     for i in 100 downto 0 loop
-      tb_exp_clk_prescaled <= '1';
-      wait for tbase_exp/2;
-      tb_exp_clk_prescaled <= '0';
-      wait for tbase_exp/2;
+      tb_exp_clk_en_prescaled <= '1';
+      wait for 1*tbase;
+      tb_exp_clk_en_prescaled <= '0';
+      wait for tbase_exp-tbase;
     end loop;
     wait;
   end process;
 
-  tb_error <= '0' when (tb_exp_clk_prescaled = tb_clk_prescaled) else '1';
+  tb_error <= '0' when (tb_exp_clk_en_prescaled = tb_clk_en_prescaled) else '1';
 
 
 end TESTBENCH;
