@@ -3,12 +3,12 @@
 # SW Build 4029153 on Fri Oct 13 20:13:54 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Sun Feb 16 18:58:27 2025
-# Process ID: 11835
+# Start of session at: Tue May 13 19:25:09 2025
+# Process ID: 24649
 # Current directory: /home/user/Data/UART_Module/UART_Module.runs/synth_1
 # Command line: vivado -log UART_Unit.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source UART_Unit.tcl
 # Log file: /home/user/Data/UART_Module/UART_Module.runs/synth_1/UART_Unit.vds
 # Journal file: /home/user/Data/UART_Module/UART_Module.runs/synth_1/vivado.jou
-# Running On: 66d1639a5fe0, OS: Linux, CPU Frequency: , CPU Physical cores: 1, Host memory: 10419 MB
+# Running On: 51f3e8f52d1d, OS: Linux, CPU Frequency: 2502.057 MHz, CPU Physical cores: 1, Host memory: 10419 MB
 #-----------------------------------------------------------
 source UART_Unit.tcl -notrace

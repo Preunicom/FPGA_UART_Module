@@ -31,7 +31,7 @@ architecture Behavioral of UART_Receiver is
     );
     Port ( 
       clk, rst : in STD_LOGIC;
-      clk_prescaled : out STD_LOGIC
+      clk_en_prescaled : out STD_LOGIC
     );
   end component;
   component Buffer_Register_Deserializer
@@ -57,14 +57,14 @@ architecture Behavioral of UART_Receiver is
       PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
-      clk, rst : in std_logic;
+      clk, clk_en_prescaled, rst : in std_logic;
       serial_in : in std_logic;
       parallel_out : out std_logic_vector(DATA_BITS-1 downto 0);
       frame_error, parity_error : out std_logic;
       data_valid : out std_logic
     );
   end component;
-  signal prescaled_clk_intern : std_logic;
+  signal prescaled_clk_en_intern : std_logic;
   signal data_intern : std_logic_vector(DATA_BITS-1 downto 0);
   signal frame_error_intern, parity_error_intern : std_logic;
   signal data_ready_intern : std_logic;
@@ -73,9 +73,9 @@ architecture Behavioral of UART_Receiver is
   signal search_reset : std_logic := '1';
   signal rst_combined : std_logic := '0';
 begin
-  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst_combined, prescaled_clk_intern);
+  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst_combined, prescaled_clk_en_intern);
   BRDESER: Buffer_Register_Deserializer generic map(DATA_BITS) port map(clk, rst, data_intern, frame_error_intern, parity_error_intern, data_ready_intern, parallel_out, frame_error, parity_error, new_data);
-  DESER: Deserializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, rst_combined, serial_in, data_intern, frame_error_intern, parity_error_intern, data_ready_intern);
+  DESER: Deserializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, prescaled_clk_en_intern, rst_combined, serial_in, data_intern, frame_error_intern, parity_error_intern, data_ready_intern);
 
   -- Resets Prescaler when new UART package was detected to get data from mid of bits
   SEARCH: process(clk)

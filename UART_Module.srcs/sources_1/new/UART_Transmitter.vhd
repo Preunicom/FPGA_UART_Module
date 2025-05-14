@@ -31,7 +31,7 @@ architecture Behavioral of UART_Transmitter is
     );
     Port ( 
       clk, rst : in STD_LOGIC;
-      clk_prescaled : out STD_LOGIC
+      clk_en_prescaled : out STD_LOGIC
     );
   end component;
   component Buffer_Register_Serializer
@@ -55,20 +55,20 @@ architecture Behavioral of UART_Transmitter is
       PARITY_MODE : integer := 0 -- 0: Even Parity; 1: Odd Parity
     );
     Port ( 
-      clk, rst, write_enable : in std_logic;
+      clk, clk_en_prescaled, rst, write_enable : in std_logic;
       parallel_in : in std_logic_vector(DATA_BITS-1 downto 0);
       serial_out : out std_logic;
       buffer_data_saved : out std_logic
     );
     end component;
-  signal prescaled_clk_intern : std_logic;
+  signal prescaled_clk_en_intern : std_logic;
   signal data_intern : std_logic_vector(DATA_BITS-1 downto 0);
   signal data_saved_intern : std_logic;
   signal full_intern : std_logic;
 begin
-  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst, prescaled_clk_intern);
+  PRES: Prescaler generic map(IN_FREQ_HZ, BAUD_FREQ_HZ) port map(clk, rst, prescaled_clk_en_intern);
   BRSER: Buffer_Register_Serializer generic map(DATA_BITS) port map(clk, rst, write_en, data_in, data_saved_intern, data_intern, full_intern);
-  SER: Serializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(prescaled_clk_intern, rst, full_intern, data_intern, serial_out, data_saved_intern);
+  SER: Serializer generic map(DATA_BITS, STOP_BITS, PARITY_ACTIVE, PARITY_MODE) port map(clk, prescaled_clk_en_intern, rst, full_intern, data_intern, serial_out, data_saved_intern);
 
   full <= full_intern;
   
