@@ -22,7 +22,7 @@ end Deserializer;
 architecture Behavioral of Deserializer is
   signal reg : std_logic_vector(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto 0);
   signal counter : integer := DATA_BITS+STOP_BITS+PARITY_ACTIVE+1;
-  signal stop_bits_suffix : std_logic_vector(STOP_BITS-1 downto 0) := (others => '1');
+  constant stop_bits_suffix : std_logic_vector(STOP_BITS-1 downto 0) := (others => '1');
   signal last_serial_in : std_logic := '1';
 begin
 

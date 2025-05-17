@@ -21,7 +21,7 @@ end Serializer;
 architecture Behavioral of Serializer is
   signal reg : std_logic_vector(DATA_BITS+STOP_BITS+PARITY_ACTIVE downto 0) := (others => '1'); -- data + stop + start + parity bits
   signal counter : std_logic_vector(3 downto 0) := (others => '1');
-  signal stop_bits_suffix : std_logic_vector(STOP_BITS-1 downto 0) := (others => '1');
+  constant stop_bits_suffix : std_logic_vector(STOP_BITS-1 downto 0) := (others => '1');
 begin
 
   SER: process(clk, rst)
