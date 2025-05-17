@@ -4,7 +4,6 @@ library IEEE;
 
 entity Prescaler is
   generic (
-    -- IN_FREQ_HZ has to be minimum 2*BAUD_FREQ_HZ
     IN_FREQ_HZ : integer := 12000000;
     OUT_FREQ_HZ : integer := 9600
   );
@@ -15,22 +14,24 @@ entity Prescaler is
 end entity;
 
 architecture Behavioral of Prescaler is
-  signal counter : integer := ((IN_FREQ_HZ / OUT_FREQ_HZ) / 2) + 2;
+  constant PRESCALE_COUNTER_HALF : integer := ((IN_FREQ_HZ / OUT_FREQ_HZ) / 2) + 2;
+  constant PRESCALE_COUNTER_END : integer := (IN_FREQ_HZ / OUT_FREQ_HZ);
+  signal counter : integer := PRESCALE_COUNTER_HALF;
 begin
 
   PRESCALER: process (clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        -- Start with low clock to start with half clock cycle until rising_edge
+        -- Start with half clock cycle until rising_edge
         -- To be able to reset Prescaler at falling edge on UART start bit to get values in the mid of a bit.
+        counter <= PRESCALE_COUNTER_HALF;
         clk_en_prescaled <= '0';
-        counter <= ((IN_FREQ_HZ / OUT_FREQ_HZ) / 2) + 2;
       else
         counter <= counter + 1;
         clk_en_prescaled <= '0';
         -- integer gets truncated in VHDL
-        if counter >= (IN_FREQ_HZ / OUT_FREQ_HZ) then
+        if counter >= PRESCALE_COUNTER_END then
           clk_en_prescaled <= '1';
           counter <= 1;
         end if;
